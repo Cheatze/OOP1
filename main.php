@@ -1,51 +1,47 @@
 <?php
 $books = [];
-// $authors = [];
-// $books = [
-//     "Harry Potter and the Philosopher's Stone" => [
-//         "author" => "J.K. Rowling",
-//         "isbn" => "978-0-7475-3269-9",
-//         "publisher" => "Bloomsbury",
-//         "publishing_date" => "26 June 1997",
-//         "pages" => 223
-//     ],
-//     "Harry Potter and the Chamber of Secrets" => [
-//         "author" => "J.K. Rowling",
-//         "isbn" => "978-0-7475-3849-3",
-//         "publisher" => "Bloomsbury",
-//         "publishing_date" => "2 July 1998",
-//         "pages" => 251
-//     ],
-//     "The Shining" => [
-//         "author" => "Stephen King",
-//         "isbn" => "978-0-385-12167-5",
-//         "publisher" => "Doubleday",
-//         "publishing_date" => "28 January 1977",
-//         "pages" => 447
-//     ],
-//     "It" => [
-//         "author" => "Stephen King",
-//         "isbn" => "978-0-670-81302-5",
-//         "publisher" => "Viking",
-//         "publishing_date" => "15 September 1986",
-//         "pages" => 1138
-//     ],
-//     "The Da Vinci Code" => [
-//         "author" => "Dan Brown",
-//         "isbn" => "978-0-385-50420-8",
-//         "publisher" => "Doubleday",
-//         "publishing_date" => "18 March 2003",
-//         "pages" => 689
-//     ],
-//     "Angels & Demons" => [
-//         "author" => "Dan Brown",
-//         "isbn" => "978-0-671-02735-4",
-//         "publisher" => "Pocket Books",
-//         "publishing_date" => "1 May 2000",
-//         "pages" => 616
-//     ]
-// ];
-$authors = ["J.K. Rowling", "Stephen King", "Dan Brown", "Bobby"];
+$authors = [];
+//$authors = ["J.K. Rowling", "Stephen King", "Dan Brown", "Bobby"];
+
+#include "Author.php";
+class Author
+{
+    private static int $count = 0;
+    private int $id;
+    public string $firstName;
+    public string $lastName;
+    public $birthDate;
+
+    public function __construct(string $firstName, string $lastName, $birthDate)
+    {
+        $this->id = ++static::$count;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->birthDate = $birthDate;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+    public function getDateOfBirth()
+    {
+        return $this->birthDate;
+    }
+    public function getDateOfBirthAsString()
+    {
+        return $this->birthDate->format("Y-m-d");
+    }
+}
+
 // require_once "Book.php";
 class Book
 {
@@ -110,6 +106,7 @@ class Book
     }
 
 }
+
 // require_once "Author";
 class Main
 {
@@ -118,25 +115,40 @@ class Main
     public function pickAuthor($authors)
     {
         do {
-            foreach ($authors as $key => $author) {
-                echo $key . ' ' . $author . "\n";
+            foreach ($authors as $author) {
+                echo $author->getId() . ' ' . $author->getFirstName() . ' ' . $author->getLastName() . "\n";
             }
-            $authorIndex = readline("Choose an author by index number: ");
-            if (array_key_exists($authorIndex, $authors)) {
+            $authorId = readline("Choose an author by ID number: ");
+
+            // Find the author with the given ID
+            $chosenAuthor = null;
+            foreach ($authors as $author) {
+                if ($author->getId() == $authorId) {
+                    $chosenAuthor = $author;
+                    break;
+                }
+            }
+
+            if ($chosenAuthor !== null) {
                 $checker = true;
             } else {
-                echo "That author index does not exist" . "\n";
+                echo "That author ID does not exist.\n";
+                $checker = false;
             }
         } while ($checker == false);
 
-        return $authors[$authorIndex];
+        return $chosenAuthor;
     }
 
     public function bookLoop($books)
     {
         foreach ($books as $book) {
             echo "Title: " . $book->getTitle() . "\n";
-            echo "Author: " . $book->getAuthor() . "\n";
+
+            // Convert the Author object to a string representation
+            $author = $book->getAuthor();
+            echo "Author: " . $author->getFirstName() . " " . $author->getLastName() . "\n";
+
             echo "ISBN: " . $book->getIsbn() . "\n";
             echo "Publisher: " . $book->getPublisher() . "\n";
             echo "Publication Date: " . $book->getPublicationDateAsString() . "\n";
@@ -214,16 +226,18 @@ class Main
             $this->bookLoop($books);
         }
     }
-
     public function showAuthorBooks()
     {
         global $authors;
         global $books;
 
+        // Get the chosen author object
         $chosenAuthor = $this->pickAuthor($authors);
+        $chosenAuthorId = $chosenAuthor->getId();
 
-        $filteredBooks = array_filter($books, function ($details) use ($chosenAuthor) {
-            return $details['author'] === $chosenAuthor;
+        // Filter books by author ID
+        $filteredBooks = array_filter($books, function ($book) use ($chosenAuthorId) {
+            return $book->getAuthor()->getId() === $chosenAuthorId;
         });
 
         if (empty($filteredBooks)) {
@@ -271,4 +285,7 @@ $game = new Main();
 #$game->addBook();
 #var_dump($books);
 #$game->removeBook();
-$game->showAllBooks();
+#$game->showAllBooks();
+#$dingus = $game->pickAuthor($authors);
+#echo $dingus->getFirstName();
+$game->showAuthorBooks();
