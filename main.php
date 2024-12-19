@@ -195,26 +195,31 @@ class Main
     {
         global $books;
         do {
-            $titles = array_keys($books);
-            foreach ($titles as $key => $title) {
-                echo $key . ' ' . $title . "\n";
+            // Display the list of books with their titles and IDs
+            foreach ($books as $key => $book) {
+                echo $key . ': ' . $book->getTitle() . "\n";
             }
-            $removeBookindex = readline("Enter the index of the title you want to remove: ");
-            $removeBook = $titles[$removeBookindex];
-            if (array_key_exists($removeBook, $books) == false) {
-                echo "That book does not exist or you spelled it wrong. " . "\n";
+
+            $removeBookIndex = readline("Enter the index of the title you want to remove: ");
+
+            // Check if the entered index is valid
+            if (!array_key_exists($removeBookIndex, $books)) {
+                echo "That index does not exist.\n";
                 continue;
             }
-            $afirmation = readline('Are you sure you want to remove ' . $removeBook . '? Yes or No: ');
-            $afirmation = strtolower($afirmation);
-            if ($afirmation == 'yes') {
+
+            $removeBook = $books[$removeBookIndex];
+            $confirmation = readline('Are you sure you want to remove "' . $removeBook->getTitle() . '"? Yes or No: ');
+            $confirmation = strtolower($confirmation);
+
+            if ($confirmation === 'yes') {
+                unset($books[$removeBookIndex]);
+                echo '"' . $removeBook->getTitle() . '" removed.\n';
                 break;
-            } elseif ($afirmation == 'no') {
+            } elseif ($confirmation === 'no') {
                 return;
             }
         } while (true);
-        unset($books[$removeBook]);
-        echo "$removeBook removed \n";
     }
 
     public function showAllBooks()
@@ -284,8 +289,8 @@ $game = new Main();
 #$game->mainMenu();
 #$game->addBook();
 #var_dump($books);
-#$game->removeBook();
+$game->removeBook();
 #$game->showAllBooks();
 #$dingus = $game->pickAuthor($authors);
 #echo $dingus->getFirstName();
-$game->showAuthorBooks();
+#$game->showAuthorBooks();

@@ -6,9 +6,9 @@ class Author
     private int $id;
     public string $firstName;
     public string $lastName;
-    public DateTimeImmutable $birthDate;
+    public $birthDate;
 
-    public function __construct(string $firstName, string $lastName, DateTimeImmutable $birthDate)
+    public function __construct(string $firstName, string $lastName, $birthDate)
     {
         $this->id = ++static::$count;
         $this->firstName = $firstName;

@@ -12,7 +12,7 @@ class Book
     public $publicationDate;
     public int $pageCount;
 
-    public function __construct(string $title, $author, string $isbn, string $publsiher, DateTimeImmutable $publicationDate, int $pageCount)
+    public function __construct(string $title, $author, string $isbn, string $publsiher, $publicationDate, int $pageCount)
     {
         $this->id = ++static::$count;
         $this->title = $title;
@@ -57,7 +57,8 @@ class Book
         return $this->publicationDate;
     }
 
-    public function getPublicationDateAsString(){
+    public function getPublicationDateAsString()
+    {
         return $this->publicationDate->format(DATE_ATOM);
     }
 
