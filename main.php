@@ -1,7 +1,6 @@
 <?php
 $books = [];
 $authors = [];
-//$authors = ["J.K. Rowling", "Stephen King", "Dan Brown", "Bobby"];
 
 #include "Author.php";
 class Author
@@ -107,10 +106,18 @@ class Book
 
 }
 
+//Adds makes and adds Author/Book objects to the books/authors array
+include "TestData.php";
+
+//include "BookRepository.php";
+class BookRepository
+{
+
+}
+
 // require_once "Author";
 class Main
 {
-
 
     public function pickAuthor($authors)
     {
@@ -186,7 +193,7 @@ class Main
         $newBook = new Book($bookTitle, $chosenAuthor, $bookNumber, $publisher, $publicationDateObj, (int) $pageCount);
 
         // Store the Book instance in the books array
-        $books[$bookTitle] = $newBook;
+        $books[] = $newBook;
 
         echo "$bookTitle has been added. \n";
     }
@@ -283,13 +290,13 @@ class Main
 
 }
 
-include "TestData.php";
+
 
 $game = new Main();
-#$game->mainMenu();
+$game->mainMenu();
 #$game->addBook();
 #var_dump($books);
-$game->removeBook();
+#$game->removeBook();
 #$game->showAllBooks();
 #$dingus = $game->pickAuthor($authors);
 #echo $dingus->getFirstName();
