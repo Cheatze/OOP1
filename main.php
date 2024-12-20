@@ -2,112 +2,15 @@
 $books = [];
 $authors = [];
 
-#include "Author.php";
-class Author
-{
-    private static int $count = 0;
-    private int $id;
-    public string $firstName;
-    public string $lastName;
-    public $birthDate;
+//Author object
+include "Author.php";
 
-    public function __construct(string $firstName, string $lastName, $birthDate)
-    {
-        $this->id = ++static::$count;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->birthDate = $birthDate;
-    }
+//Book object
+require_once "Book.php";
 
-    public function getId()
-    {
-        return $this->id;
-    }
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
-    public function getDateOfBirth()
-    {
-        return $this->birthDate;
-    }
-    public function getDateOfBirthAsString()
-    {
-        return $this->birthDate->format("Y-m-d");
-    }
-}
-
-// require_once "Book.php";
-class Book
-{
-    private static int $count = 0;
-    private int $id;
-    public string $title;
-    public $author;
-    public string $isbn;
-    public string $publisher;
-    #public DateTimeImmutable $publicationDate;
-    public $publicationDate;
-    public int $pageCount;
-
-    public function __construct(string $title, $author, string $isbn, string $publsiher, $publicationDate, int $pageCount)
-    {
-        $this->id = ++static::$count;
-        $this->title = $title;
-        $this->author = $author;
-        $this->isbn = $isbn;
-        $this->publsiher = $publsiher;
-        $this->publicationDate = $publicationDate;
-        $this->pageCount = $pageCount;
-    }
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    public function getAuthor()
-    {
-        return $this->author;
-    }
-
-    // public function getAuthorName(){
-
-    // }
-
-    public function getIsbn()
-    {
-        return $this->isbn;
-    }
-
-    public function getPublisher()
-    {
-        return $this->publsiher;
-    }
-
-    public function getPublicationDate()
-    {
-        return $this->publicationDate;
-    }
-
-    public function getPublicationDateAsString()
-    {
-        return $this->publicationDate->format(DATE_ATOM);
-    }
-
-}
 
 //Adds makes and adds Author/Book objects to the books/authors array
-include "TestData.php";
+require_once "TestData.php";
 
 //include "BookRepository.php";
 class BookRepository
@@ -137,12 +40,11 @@ class Main
             }
 
             if ($chosenAuthor !== null) {
-                $checker = true;
+                break;
             } else {
                 echo "That author ID does not exist.\n";
-                $checker = false;
             }
-        } while ($checker == false);
+        } while (true);
 
         return $chosenAuthor;
     }

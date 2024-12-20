@@ -7,7 +7,7 @@ class Book
     public string $title;
     public $author;
     public string $isbn;
-    public string $publsiher;
+    public string $publisher;
     #public DateTimeImmutable $publicationDate;
     public $publicationDate;
     public int $pageCount;
@@ -47,7 +47,7 @@ class Book
         return $this->isbn;
     }
 
-    public function getpublsiher()
+    public function getPublisher()
     {
         return $this->publsiher;
     }
