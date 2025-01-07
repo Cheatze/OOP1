@@ -15,13 +15,25 @@ require_once "TestData.php";
 //include "BookRepository.php";
 class BookRepository
 {
-
+    //I think this will require a parameter
+    //BookRepository->add($newBook);
+    public function add($newBook)
+    {
+        global $books;
+        $books[] = $newBook;
+    }
 }
 
 // require_once "Author";
 class Main
 {
 
+    /**
+     * Displays the id and full name of all authors
+     * Chooses an author based on id number and returns that author
+     * @param mixed $authors
+     * @return mixed
+     */
     public function pickAuthor($authors)
     {
         do {
@@ -193,7 +205,7 @@ class Main
 }
 
 
-
+$repo = new BookRepository();
 $game = new Main();
 $game->mainMenu();
 #$game->addBook();
