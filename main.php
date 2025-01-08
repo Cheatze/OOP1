@@ -31,6 +31,8 @@ class BookRepository
 
     }
 
+    //global $repo;
+    // = $repo->filterById($chosenAuthorId);
     public function filterById($chosenAuthorId)
     {
         global $books;
@@ -43,9 +45,6 @@ class BookRepository
 }
 //Make BookRepository object
 $repo = new BookRepository();
-
-//Adds makes and adds Author/Book objects to the books/authors array
-require_once "TestData.php";
 
 // require_once "Author";
 class Main
@@ -193,9 +192,11 @@ class Main
 
         // Filter books by author ID
         //Uses the books array so put into repo
-        $filteredBooks = array_filter($books, function ($book) use ($chosenAuthorId) {
-            return $book->getAuthor()->getId() === $chosenAuthorId;
-        });
+        // $filteredBooks = array_filter($books, function ($book) use ($chosenAuthorId) {
+        //     return $book->getAuthor()->getId() === $chosenAuthorId;
+        // });
+        global $repo;
+        $filteredBooks = $repo->filterById($chosenAuthorId);
 
         if (empty($filteredBooks)) {
             echo "There are no books by that author \n";
@@ -238,7 +239,11 @@ class Main
 
 
 $game = new Main();
+//Adds makes and adds Author/Book objects to the books/authors array
+require_once "TestData.php";
+
 $game->mainMenu();
+
 #$game->addBook();
 #var_dump($books);
 #$game->removeBook();
