@@ -1,6 +1,6 @@
 <?php
 //Put books array into the repositiory and remove global statments
-$books = [];
+//$books = [];
 $authors = [];
 
 //Author object
@@ -12,20 +12,20 @@ require_once "Book.php";
 //include "BookRepository.php";
 class BookRepository
 {
-    //private $books = [] also change TestData
+    private $books = []; //also change TestData
 
     //Add the book object to the array
     public function add($newBook)
     {
-        global $books;
-        $books[] = $newBook;
+        //global $books;
+        $this->books[] = $newBook;
     }
 
     //show all books
     public function showAll()
     {
-        global $books;
-        foreach ($books as $key => $book) {
+        //global $books;
+        foreach ($this->books as $key => $book) {
             echo $key . ': ' . $book->getTitle() . "\n";
         }
 
@@ -35,8 +35,8 @@ class BookRepository
     // = $repo->filterById($chosenAuthorId);
     public function filterById($chosenAuthorId)
     {
-        global $books;
-        $filteredBooks = array_filter($books, function ($book) use ($chosenAuthorId) {
+        //global $books;
+        $filteredBooks = array_filter($this->books, function ($book) use ($chosenAuthorId) {
             return $book->getAuthor()->getId() === $chosenAuthorId;
         });
         return $filteredBooks;
@@ -44,20 +44,20 @@ class BookRepository
 
     public function returnByIndex($index)
     {
-        global $books;
-        return $books[$index];
+        //global $books;
+        return $this->books[$index];
     }
 
     public function removeByIndex($index)
     {
-        global $books;
-        unset($books[$index]);
+        //global $books;
+        unset($this->books[$index]);
     }
 
     public function checkForIndex($index)
     {
-        global $books;
-        return array_key_exists($index, $books);
+        //global $books;
+        return array_key_exists($index, $this->books);
     }
 
 }
