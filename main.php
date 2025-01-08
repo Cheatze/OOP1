@@ -1,4 +1,5 @@
 <?php
+//Put books array into the repositiory and remove global statments
 $books = [];
 $authors = [];
 
@@ -8,21 +9,43 @@ include "Author.php";
 //Book object
 require_once "Book.php";
 
-
-//Adds makes and adds Author/Book objects to the books/authors array
-require_once "TestData.php";
-
 //include "BookRepository.php";
 class BookRepository
 {
-    //I think this will require a parameter
-    //BookRepository->add($newBook);
+    //private $books = [] also change TestData
+
+    //Add the book object to the array
     public function add($newBook)
     {
         global $books;
         $books[] = $newBook;
     }
+
+    //show all books
+    public function showAll()
+    {
+        global $books;
+        foreach ($books as $key => $book) {
+            echo $key . ': ' . $book->getTitle() . "\n";
+        }
+
+    }
+
+    public function filterById($chosenAuthorId)
+    {
+        global $books;
+        $filteredBooks = array_filter($books, function ($book) use ($chosenAuthorId) {
+            return $book->getAuthor()->getId() === $chosenAuthorId;
+        });
+        return $filteredBooks;
+    }
+
 }
+//Make BookRepository object
+$repo = new BookRepository();
+
+//Adds makes and adds Author/Book objects to the books/authors array
+require_once "TestData.php";
 
 // require_once "Author";
 class Main
@@ -80,7 +103,7 @@ class Main
     public function addBook()
     {
         global $authors;
-        global $books;
+        global $books;//check if no more use
 
         $chosenAuthor = $this->pickAuthor($authors);
 
@@ -107,19 +130,25 @@ class Main
         $newBook = new Book($bookTitle, $chosenAuthor, $bookNumber, $publisher, $publicationDateObj, (int) $pageCount);
 
         // Store the Book instance in the books array
-        $books[] = $newBook;
+        //$books[] = $newBook;
+        global $repo;
+        $repo->add($newBook);
 
         echo "$bookTitle has been added. \n";
     }
 
     public function removeBook()
     {
+        //How can I put this all in the repository?
         global $books;
         do {
             // Display the list of books with their titles and IDs
-            foreach ($books as $key => $book) {
-                echo $key . ': ' . $book->getTitle() . "\n";
-            }
+            //replace with repo showall
+            // foreach ($books as $key => $book) {
+            //     echo $key . ': ' . $book->getTitle() . "\n";
+            // }
+            global $repo;
+            $repo->showAll();
 
             $removeBookIndex = readline("Enter the index of the title you want to remove: ");
 
@@ -145,16 +174,17 @@ class Main
 
     public function showAllBooks()
     {
-        global $books;
-        if (empty($books)) {
-            echo "There are no books in the array.";
-        } else {
-            $this->bookLoop($books);
-        }
+        global $repo;
+        $repo->showAll();
+        //     echo "There are no books in the array.";
+        // } else {
+        //     $this->bookLoop($books);
+        // }
     }
     public function showAuthorBooks()
     {
         global $authors;
+        //Another thing for the repo
         global $books;
 
         // Get the chosen author object
@@ -162,6 +192,7 @@ class Main
         $chosenAuthorId = $chosenAuthor->getId();
 
         // Filter books by author ID
+        //Uses the books array so put into repo
         $filteredBooks = array_filter($books, function ($book) use ($chosenAuthorId) {
             return $book->getAuthor()->getId() === $chosenAuthorId;
         });
@@ -205,7 +236,7 @@ class Main
 }
 
 
-$repo = new BookRepository();
+
 $game = new Main();
 $game->mainMenu();
 #$game->addBook();
