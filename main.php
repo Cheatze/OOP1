@@ -42,6 +42,18 @@ class BookRepository
         return $filteredBooks;
     }
 
+    public function returnByIndex($index)
+    {
+        global $books;
+        return $books[$index];
+    }
+
+    public function removeByIndex($index)
+    {
+        global $books;
+        unset($books[$index]);
+    }
+
 }
 //Make BookRepository object
 $repo = new BookRepository();
@@ -152,17 +164,21 @@ class Main
             $removeBookIndex = readline("Enter the index of the title you want to remove: ");
 
             // Check if the entered index is valid
+            //How can I put this into the repo?
             if (!array_key_exists($removeBookIndex, $books)) {
                 echo "That index does not exist.\n";
                 continue;
             }
 
-            $removeBook = $books[$removeBookIndex];
+            //
+            //$removeBook = $books[$removeBookIndex];
+            $removeBook = $repo->returnByIndex($removeBookIndex);
             $confirmation = readline('Are you sure you want to remove "' . $removeBook->getTitle() . '"? Yes or No: ');
             $confirmation = strtolower($confirmation);
 
             if ($confirmation === 'yes') {
-                unset($books[$removeBookIndex]);
+                $repo->removeByIndex($removeBookIndex);
+                //unset($books[$removeBookIndex]);
                 echo '"' . $removeBook->getTitle() . '" removed.\n';
                 break;
             } elseif ($confirmation === 'no') {
@@ -184,7 +200,7 @@ class Main
     {
         global $authors;
         //Another thing for the repo
-        global $books;
+        //global $books;
 
         // Get the chosen author object
         $chosenAuthor = $this->pickAuthor($authors);
