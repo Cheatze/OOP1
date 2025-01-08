@@ -54,6 +54,12 @@ class BookRepository
         unset($books[$index]);
     }
 
+    public function checkForIndex($index)
+    {
+        global $books;
+        return array_key_exists($index, $books);
+    }
+
 }
 //Make BookRepository object
 $repo = new BookRepository();
@@ -165,7 +171,9 @@ class Main
 
             // Check if the entered index is valid
             //How can I put this into the repo?
-            if (!array_key_exists($removeBookIndex, $books)) {
+            //$repo->checkForIndex($removeBookIndex); !array_key_exists($removeBookIndex, $books)
+            $bool = $repo->checkForIndex($removeBookIndex);
+            if (!$bool) {
                 echo "That index does not exist.\n";
                 continue;
             }
