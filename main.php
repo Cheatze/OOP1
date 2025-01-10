@@ -116,6 +116,7 @@ class Main
     }
 
     //To be addapted and reused for a 'show details' function
+    //Still used by show by author method
     public function bookLoop($books)
     {
         foreach ($books as $book) {
@@ -132,7 +133,7 @@ class Main
         }
     }
 
-    //Gets all the details for a new book and adds it through the repository
+    //Gets all the details for a new book and adds it to the array through the repository
     public function addBook()
     {
         global $authors;
@@ -196,15 +197,13 @@ class Main
         } while (true);
     }
 
+    //Shows a index/title list of all books
     public function showAllBooks()
     {
-        //
         $this->repository->showAll();
-        //     echo "There are no books in the array.";
-        // } else {
-        //     $this->bookLoop($books); So this was my only use of bookLoop?
-        // }
     }
+
+    //Shows books by a chosen author
     public function showAuthorBooks()
     {
         global $authors;
@@ -214,12 +213,9 @@ class Main
         $chosenAuthorId = $chosenAuthor->getId();
 
         // Filter books by author ID
-        //Uses the books array so put into repo
-        // $filteredBooks = array_filter($books, function ($book) use ($chosenAuthorId) {
-        //     return $book->getAuthor()->getId() === $chosenAuthorId;
-        // });
         $filteredBooks = $this->repository->filterById($chosenAuthorId);
 
+        //Shows all books by chosen author and their details
         if (empty($filteredBooks)) {
             echo "There are no books by that author \n";
         } else {
