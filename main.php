@@ -2,67 +2,12 @@
 $authors = [];
 
 //Author object
-include "Author.php";
+require_once "Author.php";
 
 //Book object
 require_once "Book.php";
 
-//include "BookRepository.php";
-class BookRepository
-{
-
-    private $books = [];
-
-    //Add the given book object to the array
-    public function add($newBook)
-    {
-        $this->books[] = $newBook;
-    }
-
-    //show all books and their indexes
-    public function showAll()
-    {
-        //add a check if the books array is empty
-        if (empty($this->books)) {
-            echo "There are no books in the array.";
-        } else {
-            foreach ($this->books as $key => $book) {
-                echo $key . ': ' . $book->getTitle() . "\n";
-            }
-        }
-
-
-    }
-
-    //Filters the books array by author id and returns filtered array
-    public function filterById($chosenAuthorId)
-    {
-        $filteredBooks = array_filter($this->books, function ($book) use ($chosenAuthorId) {
-            return $book->getAuthor()->getId() === $chosenAuthorId;
-        });
-        return $filteredBooks;
-    }
-
-    //Returns a book with a certain index
-    public function returnByIndex($index)
-    {
-        return $this->books[$index];
-    }
-
-    //Removes a book with a certain index
-    public function removeByIndex($index)
-    {
-        unset($this->books[$index]);
-    }
-
-    //Checks if a book exists at a certain index and returns bool
-    public function checkForIndex($index)
-    {
-        return array_key_exists($index, $this->books);
-    }
-
-}
-
+require_once "BookRepository.php";
 
 class Main
 {
@@ -258,16 +203,9 @@ class Main
 //Make BookRepository object
 $repo = new BookRepository();
 
+//Make main and pass the repository
 $game = new Main($repo);
-//Adds makes and adds Author/Book objects to the books/authors array
+//Makes and adds test Author/Book objects to the books/authors array
 require_once "TestData.php";
 
 $game->mainMenu();
-
-#$game->addBook();
-#var_dump($books);
-#$game->removeBook();
-#$game->showAllBooks();
-#$dingus = $game->pickAuthor($authors);
-#echo $dingus->getFirstName();
-#$game->showAuthorBooks();
