@@ -19,7 +19,7 @@ class BookRepository
             echo "There are no books in the array.";
         } else {
             foreach ($this->books as $key => $book) {
-                echo $key . ': ' . $book->getTitle() . "\n";
+                echo $key . ': ' . $book->getTitle() . " by: " . $book->getAuthorName() . "\n";
             }
         }
 

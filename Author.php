@@ -28,6 +28,12 @@ class Author
     {
         return $this->lastName;
     }
+    public function getName()
+    {
+        $fName = $this->firstName;
+        $lName = $this->lastName;
+        return "$fName $lName";
+    }
     public function getDateOfBirth()
     {
         return $this->birthDate;

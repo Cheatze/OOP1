@@ -18,7 +18,7 @@ class Book
         $this->title = $title;
         $this->author = $author;
         $this->isbn = $isbn;
-        $this->publsiher = $publsiher;
+        $this->publisher = $publsiher;
         $this->publicationDate = $publicationDate;
         $this->pageCount = $pageCount;
     }
@@ -38,9 +38,10 @@ class Book
         return $this->author;
     }
 
-    // public function getAuthorName(){
-
-    // }
+    public function getAuthorName(){
+        $name = $this->author->getName();
+        return $name;
+    }
 
     public function getIsbn()
     {
@@ -49,7 +50,7 @@ class Book
 
     public function getPublisher()
     {
-        return $this->publsiher;
+        return $this->publisher;
     }
 
     public function getPublicationDate()

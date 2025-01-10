@@ -60,6 +60,30 @@ class Main
         return $chosenAuthor;
     }
 
+    public function bookDetails($book, $removeBookIndex)
+    {
+        echo "Title: " . $book->getTitle() . "\n";
+
+        // Convert the Author object to a string representation
+        $author = $book->getAuthor();
+        echo "Author: " . $author->getFirstName() . " " . $author->getLastName() . "\n";
+
+        echo "ISBN: " . $book->getIsbn() . "\n";
+        echo "Publisher: " . $book->getPublisher() . "\n";
+        echo "Publication Date: " . $book->getPublicationDateAsString() . "\n";
+        echo "Page Count: " . $book->pageCount . "\n\n";
+
+        $confirmation = readline("Do you want to delete this book? Yes/No");
+        $confirmation = strtolower($confirmation);
+
+        if ($confirmation === 'yes') {
+            $this->repository->removeByIndex($removeBookIndex);
+            echo '"' . $book->getTitle() . '" removed.\n';
+        } elseif ($confirmation === 'no') {
+            $this->bookDetails($book, $removeBookIndex);
+        }
+    }
+
     //To be addapted and reused for a 'show details' function
     //Still used by show by author method
     public function bookLoop($books)
@@ -112,6 +136,7 @@ class Main
         echo "$bookTitle has been added. \n";
     }
 
+
     public function removeBook()
     {
         do {
@@ -142,10 +167,34 @@ class Main
         } while (true);
     }
 
-    //Shows a index/title list of all books
+
     public function showAllBooks()
     {
+        //Shows a index/title list of all books
         $this->repository->showAll();
+
+        //Ask if you want to remove a book and return to main menu if no
+        $question = readline("Do you want to see al the details of a certain book? yes/no ");
+        $question = strtolower($question);
+        if ($question == "no") {
+            $this->mainMenu();
+        }
+
+        $detailsBookIndex = readline("Enter the index of a title if you want to see its details: ");
+
+        // Check if the entered index is valid
+        $bool = $this->repository->checkForIndex($detailsBookIndex);
+        if (!$bool) {
+            echo "That index does not exist.\n";
+            $this->showAllBooks();
+        }
+
+        $detailsBook = $this->repository->returnByIndex($detailsBookIndex);
+
+        $this->bookDetails($detailsBook, $detailsBookIndex);
+
+
+
     }
 
     //Shows books by a chosen author
