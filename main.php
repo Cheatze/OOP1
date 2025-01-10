@@ -1,6 +1,4 @@
 <?php
-//Put books array into the repositiory and remove global statments
-//$books = [];
 $authors = [];
 
 //Author object
@@ -12,12 +10,12 @@ require_once "Book.php";
 //include "BookRepository.php";
 class BookRepository
 {
-    private $books = []; //also change TestData
 
-    //Add the book object to the array
+    private $books = [];
+
+    //Add the given book object to the array
     public function add($newBook)
     {
-        //global $books;
         $this->books[] = $newBook;
     }
 
@@ -31,42 +29,50 @@ class BookRepository
 
     }
 
-    //global $repo;
-    // = $repo->filterById($chosenAuthorId);
+    //Filters the books array by author id and returns filtered array
     public function filterById($chosenAuthorId)
     {
-        //global $books;
         $filteredBooks = array_filter($this->books, function ($book) use ($chosenAuthorId) {
             return $book->getAuthor()->getId() === $chosenAuthorId;
         });
         return $filteredBooks;
     }
 
+    //Returns a book with a certain index
     public function returnByIndex($index)
     {
-        //global $books;
         return $this->books[$index];
     }
 
+    //Removes a book with a certain index
     public function removeByIndex($index)
     {
-        //global $books;
         unset($this->books[$index]);
     }
 
+    //Checks if a book exists at a certain index and returns bool
     public function checkForIndex($index)
     {
-        //global $books;
         return array_key_exists($index, $this->books);
     }
 
 }
-//Make BookRepository object
-$repo = new BookRepository();
 
-// require_once "Author";
+
 class Main
 {
+
+    public $repository;
+
+    public function __construct($repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function addForTest($nBook)
+    {
+        $this->repository->add($nBook);
+    }
 
     /**
      * Displays the id and full name of all authors
@@ -101,6 +107,7 @@ class Main
         return $chosenAuthor;
     }
 
+    //Wait, this still uses the books array?
     public function bookLoop($books)
     {
         foreach ($books as $book) {
@@ -148,8 +155,8 @@ class Main
 
         // Store the Book instance in the books array
         //$books[] = $newBook;
-        global $repo;
-        $repo->add($newBook);
+        //global $repo;
+        $this->repository->add($newBook);
 
         echo "$bookTitle has been added. \n";
     }
@@ -157,22 +164,17 @@ class Main
     public function removeBook()
     {
         //How can I put this all in the repository?
-        global $books;
+        //global $books;
         do {
             // Display the list of books with their titles and IDs
-            //replace with repo showall
-            // foreach ($books as $key => $book) {
-            //     echo $key . ': ' . $book->getTitle() . "\n";
-            // }
-            global $repo;
-            $repo->showAll();
+            $this->repository->showAll();
 
             $removeBookIndex = readline("Enter the index of the title you want to remove: ");
 
             // Check if the entered index is valid
             //How can I put this into the repo?
             //$repo->checkForIndex($removeBookIndex); !array_key_exists($removeBookIndex, $books)
-            $bool = $repo->checkForIndex($removeBookIndex);
+            $bool = $this->repository->checkForIndex($removeBookIndex);
             if (!$bool) {
                 echo "That index does not exist.\n";
                 continue;
@@ -180,12 +182,12 @@ class Main
 
             //
             //$removeBook = $books[$removeBookIndex];
-            $removeBook = $repo->returnByIndex($removeBookIndex);
+            $removeBook = $this->repository->returnByIndex($removeBookIndex);
             $confirmation = readline('Are you sure you want to remove "' . $removeBook->getTitle() . '"? Yes or No: ');
             $confirmation = strtolower($confirmation);
 
             if ($confirmation === 'yes') {
-                $repo->removeByIndex($removeBookIndex);
+                $this->repository->removeByIndex($removeBookIndex);
                 //unset($books[$removeBookIndex]);
                 echo '"' . $removeBook->getTitle() . '" removed.\n';
                 break;
@@ -197,18 +199,15 @@ class Main
 
     public function showAllBooks()
     {
-        global $repo;
-        $repo->showAll();
+        $this->repository->showAll();
         //     echo "There are no books in the array.";
         // } else {
-        //     $this->bookLoop($books);
+        //     $this->bookLoop($books); So this was my only use of bookLoop?
         // }
     }
     public function showAuthorBooks()
     {
         global $authors;
-        //Another thing for the repo
-        //global $books;
 
         // Get the chosen author object
         $chosenAuthor = $this->pickAuthor($authors);
@@ -219,8 +218,7 @@ class Main
         // $filteredBooks = array_filter($books, function ($book) use ($chosenAuthorId) {
         //     return $book->getAuthor()->getId() === $chosenAuthorId;
         // });
-        global $repo;
-        $filteredBooks = $repo->filterById($chosenAuthorId);
+        $filteredBooks = $this->repository->filterById($chosenAuthorId);
 
         if (empty($filteredBooks)) {
             echo "There are no books by that author \n";
@@ -261,8 +259,10 @@ class Main
 }
 
 
+//Make BookRepository object
+$repo = new BookRepository();
 
-$game = new Main();
+$game = new Main($repo);
 //Adds makes and adds Author/Book objects to the books/authors array
 require_once "TestData.php";
 

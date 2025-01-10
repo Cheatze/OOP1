@@ -18,10 +18,6 @@ foreach ($authors as $author) {
         $newBook = new Book($bookTitle, $author, $isbn, $publisher, $publicationDate, $pageCount);
 
         // Add the Book instance to the books array
-        //use repository 
-        global $repo;
-        $repo->add($newBook);
-        //$books[] = $newBook;
+        $game->addForTest($newBook);
     }
 }
-
