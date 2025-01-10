@@ -19,13 +19,18 @@ class BookRepository
         $this->books[] = $newBook;
     }
 
-    //show all books
+    //show all books and their indexes
     public function showAll()
     {
-        //global $books;
-        foreach ($this->books as $key => $book) {
-            echo $key . ': ' . $book->getTitle() . "\n";
+        //add a check if the books array is empty
+        if (empty($this->books)) {
+            echo "There are no books in the array.";
+        } else {
+            foreach ($this->books as $key => $book) {
+                echo $key . ': ' . $book->getTitle() . "\n";
+            }
         }
+
 
     }
 
@@ -62,13 +67,16 @@ class BookRepository
 class Main
 {
 
+    //Repository object
     public $repository;
 
+    //Sets the repository object
     public function __construct($repository)
     {
         $this->repository = $repository;
     }
 
+    //Directly adds a book, onl used by TestData
     public function addForTest($nBook)
     {
         $this->repository->add($nBook);
@@ -107,7 +115,7 @@ class Main
         return $chosenAuthor;
     }
 
-    //Wait, this still uses the books array?
+    //To be addapted and reused for a 'show details' function
     public function bookLoop($books)
     {
         foreach ($books as $book) {
@@ -124,17 +132,16 @@ class Main
         }
     }
 
+    //Gets all the details for a new book and adds it through the repository
     public function addBook()
     {
         global $authors;
-        global $books;//check if no more use
 
         $chosenAuthor = $this->pickAuthor($authors);
 
         $bookTitle = readline("Enter the title: ");
         $bookNumber = readline("Enter the ISBN: ");
         $publisher = readline("Enter the publisher: ");
-        #$publicationDate = readline("Enter the publication date (YYYY-MM-DD): ");
         $pageCount = readline("Enter the page count: ");
 
 
@@ -154,8 +161,6 @@ class Main
         $newBook = new Book($bookTitle, $chosenAuthor, $bookNumber, $publisher, $publicationDateObj, (int) $pageCount);
 
         // Store the Book instance in the books array
-        //$books[] = $newBook;
-        //global $repo;
         $this->repository->add($newBook);
 
         echo "$bookTitle has been added. \n";
@@ -163,32 +168,26 @@ class Main
 
     public function removeBook()
     {
-        //How can I put this all in the repository?
-        //global $books;
         do {
-            // Display the list of books with their titles and IDs
+            // Display the list of books with their titles and indexes
             $this->repository->showAll();
 
             $removeBookIndex = readline("Enter the index of the title you want to remove: ");
 
             // Check if the entered index is valid
-            //How can I put this into the repo?
-            //$repo->checkForIndex($removeBookIndex); !array_key_exists($removeBookIndex, $books)
             $bool = $this->repository->checkForIndex($removeBookIndex);
             if (!$bool) {
                 echo "That index does not exist.\n";
                 continue;
             }
 
-            //
-            //$removeBook = $books[$removeBookIndex];
+            //Returns the book of the chosen index
             $removeBook = $this->repository->returnByIndex($removeBookIndex);
             $confirmation = readline('Are you sure you want to remove "' . $removeBook->getTitle() . '"? Yes or No: ');
             $confirmation = strtolower($confirmation);
 
             if ($confirmation === 'yes') {
                 $this->repository->removeByIndex($removeBookIndex);
-                //unset($books[$removeBookIndex]);
                 echo '"' . $removeBook->getTitle() . '" removed.\n';
                 break;
             } elseif ($confirmation === 'no') {
@@ -199,6 +198,7 @@ class Main
 
     public function showAllBooks()
     {
+        //
         $this->repository->showAll();
         //     echo "There are no books in the array.";
         // } else {
