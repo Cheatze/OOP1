@@ -173,11 +173,25 @@ class Main
         } while (true);
     }
 
+    public function showAll()
+    {
+        $books = $this->repository->getAll();
+        //add a check if the books array is empty
+        if (empty($books)) {
+            echo "There are no books in the array.";
+        } else {
+            foreach ($books as $key => $book) {
+                echo $key . ': ' . $book->getTitle() . " by: " . $book->getAuthorName() . "\n";
+            }
+        }
+
+
+    }
 
     public function showAllBooks()
     {
         //Shows a index/title list of all books
-        $this->repository->showAll();
+        $this->showAll();
 
         //Ask if you want to remove a book and return to main menu if no
         $question = readline("Do you want to see al the details of a certain book? yes/no ");

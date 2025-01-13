@@ -12,8 +12,10 @@ class BookRepository
     }
 
     //show all books and their indexes
+    //Put this in main and make a getAll
     public function showAll()
     {
+        //$books = $this->repository->getAll();
         //add a check if the books array is empty
         if (empty($this->books)) {
             echo "There are no books in the array.";
@@ -24,6 +26,11 @@ class BookRepository
         }
 
 
+    }
+
+    public function getAll()
+    {
+        return $this->books;
     }
 
     //Filters the books array by author id and returns filtered array
