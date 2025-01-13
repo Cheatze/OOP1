@@ -53,6 +53,17 @@ class BookRepository
         unset($this->books[$index]);
     }
 
+    public function removeById(int $id)
+    {
+        foreach ($this->books as $index => $book) {
+            if ($book->getId() === $id) {
+                // Remove the object at this index
+                unset($this->books[$index]);
+                break; // Exit loop since we found what we needed
+            }
+        }
+    }
+
     //Checks if a book exists at a certain index and returns bool
     //Replace with checkForId
     public function checkForIndex(int $index)
