@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * BookRepository
+ * Contains the book array and deals with it.
+ * Adds, gets all, filters, 
+ */
 class BookRepository
 {
 
@@ -9,23 +14,6 @@ class BookRepository
     public function add(object $newBook)
     {
         $this->books[] = $newBook;
-    }
-
-    //show all books and their indexes
-    //Put this in main and make a getAll
-    public function showAll()
-    {
-        //$books = $this->repository->getAll();
-        //add a check if the books array is empty
-        if (empty($this->books)) {
-            echo "There are no books in the array.";
-        } else {
-            foreach ($this->books as $key => $book) {
-                echo $key . ': ' . $book->getTitle() . " by: " . $book->getAuthorName() . "\n";
-            }
-        }
-
-
     }
 
     public function getAll()
@@ -43,21 +31,43 @@ class BookRepository
     }
 
     //Returns a book with a certain index
+    //change to returnById
     public function returnByIndex(int $index)
     {
         return $this->books[$index];
     }
+    public function returnById(int $id)
+    {
+        foreach ($this->books as $book) {
+            if ($book->getid() == $id) {
+                return $book;
+            }
+        }
+        //return $this->books[$index];
+    }
 
     //Removes a book with a certain index
+    //Replace with removeById
     public function removeByIndex(int $index)
     {
         unset($this->books[$index]);
     }
 
     //Checks if a book exists at a certain index and returns bool
+    //Replace with checkForId
     public function checkForIndex(int $index)
     {
         return array_key_exists($index, $this->books);
+    }
+
+    public function checkForId(int $id)
+    {
+        foreach ($this->books as $book) {
+            if ($book->getId() === $id) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

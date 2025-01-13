@@ -61,6 +61,7 @@ class Main
         return $chosenAuthor;
     }
 
+    //change variable to $removeBookId
     public function bookDetails(object $book, int $removeBookIndex)
     {
         //I think all of this can go in a method with the argument $book
@@ -80,6 +81,7 @@ class Main
         $confirmation = strtolower($confirmation);
 
         if ($confirmation === 'yes') {
+            //addapt and change to removeById;
             $this->repository->removeByIndex($removeBookIndex);
             echo '"' . $book->getTitle() . '" removed.\n';
         } elseif ($confirmation === 'no') {
@@ -147,11 +149,13 @@ class Main
     {
         do {
             // Display the list of books with their titles and indexes
-            $this->repository->showAll();
+            $this->showAll();
 
+            //Change to work with id
             $removeBookIndex = readline("Enter the index of the title you want to remove: ");
 
             // Check if the entered index is valid
+            //Addapt and change to checkForId
             $bool = $this->repository->checkForIndex($removeBookIndex);
             if (!$bool) {
                 echo "That index does not exist.\n";
@@ -159,11 +163,13 @@ class Main
             }
 
             //Returns the book of the chosen index
+            //Addapt and change to returnById
             $removeBook = $this->repository->returnByIndex($removeBookIndex);
             $confirmation = readline('Are you sure you want to remove "' . $removeBook->getTitle() . '"? Yes or No: ');
             $confirmation = strtolower($confirmation);
 
             if ($confirmation === 'yes') {
+                //Addapt and change to removeById
                 $this->repository->removeByIndex($removeBookIndex);
                 echo '"' . $removeBook->getTitle() . '" removed.\n';
                 break;
@@ -181,7 +187,8 @@ class Main
             echo "There are no books in the array.";
         } else {
             foreach ($books as $key => $book) {
-                echo $key . ': ' . $book->getTitle() . " by: " . $book->getAuthorName() . "\n";
+                //echo $key . ': ' . $book->getTitle() . " by: " . $book->getAuthorName() . "\n";
+                echo 'Id: ' . $book->getId() . ': ' . $book->getTitle() . " by: " . $book->getAuthorName() . "\n";
             }
         }
 
@@ -200,19 +207,20 @@ class Main
             $this->mainMenu();
         }
 
-        $detailsBookIndex = readline("Enter the index of a title if you want to see its details: ");
-        $detailsBookIndex = (int) $detailsBookIndex;
+        //Change to detailsBookId
+        $detailsBookId = readline("Enter the id of a title if you want to see its details: ");
+        $detailsBookId = (int) $detailsBookId;
 
         // Check if the entered index is valid
-        $bool = $this->repository->checkForIndex($detailsBookIndex);
+        $bool = $this->repository->checkForId($detailsBookId);
         if (!$bool) {
             echo "That index does not exist.\n ";
             $this->showAllBooks();
         }
 
-        $detailsBook = $this->repository->returnByIndex($detailsBookIndex);
+        $detailsBook = $this->repository->returnById($detailsBookId);
 
-        $this->bookDetails($detailsBook, $detailsBookIndex);
+        $this->bookDetails($detailsBook, $detailsBookId);
 
 
 
