@@ -13,7 +13,7 @@ class Main
 {
 
     //Repository object
-    public $repository;
+    public object $repository;
 
     //Sets the repository object
     public function __construct($repository)
@@ -40,6 +40,7 @@ class Main
                 echo $author->getId() . ' ' . $author->getFirstName() . ' ' . $author->getLastName() . "\n";
             }
             $authorId = readline("Choose an author by ID number: ");
+            $authorId = (int) $authorId;
 
             // Find the author with the given ID
             $chosenAuthor = null;
@@ -60,8 +61,10 @@ class Main
         return $chosenAuthor;
     }
 
-    public function bookDetails($book, $removeBookIndex)
+    public function bookDetails(object $book, int $removeBookIndex)
     {
+        //I think all of this can go in a method with the argument $book
+
         echo "Title: " . $book->getTitle() . "\n";
 
         // Convert the Author object to a string representation
@@ -73,20 +76,23 @@ class Main
         echo "Publication Date: " . $book->getPublicationDateAsString() . "\n";
         echo "Page Count: " . $book->pageCount . "\n\n";
 
-        $confirmation = readline("Do you want to delete this book? Yes/No");
+        $confirmation = readline("Do you want to delete this book? Yes/No/Menu ");
         $confirmation = strtolower($confirmation);
 
         if ($confirmation === 'yes') {
             $this->repository->removeByIndex($removeBookIndex);
             echo '"' . $book->getTitle() . '" removed.\n';
         } elseif ($confirmation === 'no') {
+
             $this->bookDetails($book, $removeBookIndex);
+        } else {
+            $this->mainMenu();
         }
     }
 
     //To be addapted and reused for a 'show details' function
     //Still used by show by author method
-    public function bookLoop($books)
+    public function bookLoop(array $books)
     {
         foreach ($books as $book) {
             echo "Title: " . $book->getTitle() . "\n";
@@ -181,11 +187,12 @@ class Main
         }
 
         $detailsBookIndex = readline("Enter the index of a title if you want to see its details: ");
+        $detailsBookIndex = (int) $detailsBookIndex;
 
         // Check if the entered index is valid
         $bool = $this->repository->checkForIndex($detailsBookIndex);
         if (!$bool) {
-            echo "That index does not exist.\n";
+            echo "That index does not exist.\n ";
             $this->showAllBooks();
         }
 
@@ -226,7 +233,7 @@ class Main
             echo "3: Show all books \n";
             echo "4: Show all books of a certain author \n";
             echo "5: exit \n";
-            $choice = readline("Choose by number: ");
+            $choice = (int) readline("Choose by number: ");
             switch ($choice) {
                 case "1":
                     $this->addBook();
@@ -242,6 +249,8 @@ class Main
                     break;
                 case "5":
                     exit();
+                default:
+                    $this->mainMenu();
             }
         }
     }

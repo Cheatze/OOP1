@@ -3,10 +3,10 @@
 class BookRepository
 {
 
-    private $books = [];
+    private array $books = [];
 
     //Add the given book object to the array
-    public function add($newBook)
+    public function add(object $newBook)
     {
         $this->books[] = $newBook;
     }
@@ -27,7 +27,7 @@ class BookRepository
     }
 
     //Filters the books array by author id and returns filtered array
-    public function filterById($chosenAuthorId)
+    public function filterById(int $chosenAuthorId)
     {
         $filteredBooks = array_filter($this->books, function ($book) use ($chosenAuthorId) {
             return $book->getAuthor()->getId() === $chosenAuthorId;
@@ -36,19 +36,19 @@ class BookRepository
     }
 
     //Returns a book with a certain index
-    public function returnByIndex($index)
+    public function returnByIndex(int $index)
     {
         return $this->books[$index];
     }
 
     //Removes a book with a certain index
-    public function removeByIndex($index)
+    public function removeByIndex(int $index)
     {
         unset($this->books[$index]);
     }
 
     //Checks if a book exists at a certain index and returns bool
-    public function checkForIndex($index)
+    public function checkForIndex(int $index)
     {
         return array_key_exists($index, $this->books);
     }
