@@ -4,13 +4,13 @@ class Book
 {
     private static int $count = 0;
     private int $id;
-    public string $title;
-    public $author;
-    public string $isbn;
-    public string $publisher;
+    private string $title;
+    private $author;
+    private string $isbn;
+    private string $publisher;
     #public DateTimeImmutable $publicationDate;
-    public $publicationDate;
-    public int $pageCount;
+    private $publicationDate;
+    private int $pageCount;
 
     public function __construct(string $title, $author, string $isbn, string $publsiher, $publicationDate, int $pageCount)
     {
@@ -38,7 +38,8 @@ class Book
         return $this->author;
     }
 
-    public function getAuthorName(){
+    public function getAuthorName()
+    {
         $name = $this->author->getName();
         return $name;
     }
@@ -61,6 +62,11 @@ class Book
     public function getPublicationDateAsString()
     {
         return $this->publicationDate->format(DATE_ATOM);
+    }
+
+    public function getPagecount()
+    {
+        return $this->pageCount;
     }
 
 }

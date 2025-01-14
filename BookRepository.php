@@ -3,7 +3,7 @@
 /**
  * BookRepository
  * Contains the book array and deals with it.
- * Adds, gets all, filters, 
+ * Adds, gets all, filters by id, returns by id, removes by id, checks for id 
  */
 class BookRepository
 {

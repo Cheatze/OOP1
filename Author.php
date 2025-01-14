@@ -4,9 +4,9 @@ class Author
 {
     private static int $count = 0;
     private int $id;
-    public string $firstName;
-    public string $lastName;
-    public $birthDate;
+    private string $firstName;
+    private string $lastName;
+    private $birthDate;
 
     public function __construct(string $firstName, string $lastName, $birthDate)
     {

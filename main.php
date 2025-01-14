@@ -61,7 +61,7 @@ class Main
         return $chosenAuthor;
     }
 
-    //change variable to $removeBookId
+    //Displays all the details of a given book and lets you delete it
     public function bookDetails(object $book, int $removeBookId)
     {
         //I think all of this can go in a method with the argument $book
@@ -75,7 +75,7 @@ class Main
         echo "ISBN: " . $book->getIsbn() . "\n";
         echo "Publisher: " . $book->getPublisher() . "\n";
         echo "Publication Date: " . $book->getPublicationDateAsString() . "\n";
-        echo "Page Count: " . $book->pageCount . "\n\n";
+        echo "Page Count: " . $book->getPagecount() . "\n\n";
 
         $confirmation = readline("Do you want to delete this book? Yes/No/Menu ");
         $confirmation = strtolower($confirmation);
@@ -92,8 +92,7 @@ class Main
         }
     }
 
-    //To be addapted and reused for a 'show details' function
-    //Still used by show by author method
+    //Shows the details of all the books objects in a given array
     public function bookLoop(array $books)
     {
         foreach ($books as $book) {
@@ -106,7 +105,7 @@ class Main
             echo "ISBN: " . $book->getIsbn() . "\n";
             echo "Publisher: " . $book->getPublisher() . "\n";
             echo "Publication Date: " . $book->getPublicationDateAsString() . "\n";
-            echo "Page Count: " . $book->pageCount . "\n\n";
+            echo "Page Count: " . $book->getPagecount() . "\n\n";
         }
     }
 
@@ -145,25 +144,24 @@ class Main
     }
 
 
+    //Removes a book
     public function removeBook()
     {
         do {
             // Display the list of books with their titles and indexes
             $this->showAll();
 
-            //Change to work with id
+
             $removeBookId = readline("Enter the id of the title you want to remove: ");
 
-            // Check if the entered index is valid
-            //Addapt and change to checkForId
+            // Check if the entered id exists
             $bool = $this->repository->checkForId($removeBookId);
             if (!$bool) {
-                echo "That index does not exist.\n";
+                echo "That id does not exist.\n";
                 continue;
             }
 
-            //Returns the book of the chosen index
-            //Addapt and change to returnById
+            //Returns the book of the chosen id
             $removeBook = $this->repository->returnById($removeBookId);
             $confirmation = readline('Are you sure you want to remove "' . $removeBook->getTitle() . '"? Yes or No: ');
             $confirmation = strtolower($confirmation);
