@@ -30,12 +30,7 @@ class BookRepository
         return $filteredBooks;
     }
 
-    //Returns a book with a certain index
-    //change to returnById
-    public function returnByIndex(int $index)
-    {
-        return $this->books[$index];
-    }
+    //Returns a book with a certain id
     public function returnById(int $id)
     {
         foreach ($this->books as $book) {
@@ -43,16 +38,9 @@ class BookRepository
                 return $book;
             }
         }
-        //return $this->books[$index];
     }
 
     //Removes a book with a certain index
-    //Replace with removeById
-    public function removeByIndex(int $index)
-    {
-        unset($this->books[$index]);
-    }
-
     public function removeById(int $id)
     {
         foreach ($this->books as $index => $book) {
@@ -65,12 +53,6 @@ class BookRepository
     }
 
     //Checks if a book exists at a certain index and returns bool
-    //Replace with checkForId
-    public function checkForIndex(int $index)
-    {
-        return array_key_exists($index, $this->books);
-    }
-
     public function checkForId(int $id)
     {
         foreach ($this->books as $book) {
