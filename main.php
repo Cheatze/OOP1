@@ -62,7 +62,7 @@ class Main
     }
 
     //change variable to $removeBookId
-    public function bookDetails(object $book, int $removeBookIndex)
+    public function bookDetails(object $book, int $removeBookId)
     {
         //I think all of this can go in a method with the argument $book
 
@@ -82,11 +82,11 @@ class Main
 
         if ($confirmation === 'yes') {
             //addapt and change to removeById;
-            $this->repository->removeByIndex($removeBookIndex);
+            $this->repository->removeById($removeBookId);
             echo '"' . $book->getTitle() . '" removed.\n';
         } elseif ($confirmation === 'no') {
 
-            $this->bookDetails($book, $removeBookIndex);
+            $this->bookDetails($book, $removeBookId);
         } else {
             $this->mainMenu();
         }
@@ -152,11 +152,11 @@ class Main
             $this->showAll();
 
             //Change to work with id
-            $removeBookIndex = readline("Enter the index of the title you want to remove: ");
+            $removeBookId = readline("Enter the id of the title you want to remove: ");
 
             // Check if the entered index is valid
             //Addapt and change to checkForId
-            $bool = $this->repository->checkForIndex($removeBookIndex);
+            $bool = $this->repository->checkForId($removeBookId);
             if (!$bool) {
                 echo "That index does not exist.\n";
                 continue;
@@ -164,13 +164,13 @@ class Main
 
             //Returns the book of the chosen index
             //Addapt and change to returnById
-            $removeBook = $this->repository->returnByIndex($removeBookIndex);
+            $removeBook = $this->repository->returnById($removeBookId);
             $confirmation = readline('Are you sure you want to remove "' . $removeBook->getTitle() . '"? Yes or No: ');
             $confirmation = strtolower($confirmation);
 
             if ($confirmation === 'yes') {
                 //Addapt and change to removeById
-                $this->repository->removeByIndex($removeBookIndex);
+                $this->repository->removeById($removeBookId);
                 echo '"' . $removeBook->getTitle() . '" removed.\n';
                 break;
             } elseif ($confirmation === 'no') {
